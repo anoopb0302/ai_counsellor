@@ -1,0 +1,138 @@
+[
+  {
+    "title": "Live Classes",
+    "text": "Students participate in interactive live classes where they can ask questions and engage with teachers in real-time. This immediate interaction helps clarify doubts.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["live classes", "real-time", "doubt resolution"],
+    "language": "en"
+  },
+  {
+    "title": "Recorded Sessions",
+    "text": "If a student misses a class, they can access recorded sessions later. This flexibility allows them to learn at their own pace and revisit complex topics.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["recordings", "flexibility", "self-paced"],
+    "language": "en"
+  },
+  {
+    "title": "Study Material",
+    "text": "PW provides comprehensive study materials, including video lectures, notes, and practice questions. These resources cover the entire JEE syllabus in a structured manner.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["notes", "practice questions", "syllabus"],
+    "language": "en"
+  },
+  {
+    "title": "Doubt Resolution",
+    "text": "A dedicated doubt-clearing portal is available. Students can submit questions during or after classes, and responses are provided within 24 hours, ensuring they get help when needed.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["doubt portal", "support", "resolution"],
+    "language": "en"
+  },
+  {
+    "title": "Mock Tests",
+    "text": "Regular mock tests simulate the exam experience and help students assess their understanding and improve their exam readiness.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["mock tests", "assessment", "exam prep"],
+    "language": "en"
+  },
+  {
+    "title": "Performance Tracking",
+    "text": "A performance dashboard allows students to track their progress, attendance, and grades. This feature helps identify strengths and areas needing improvement.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["dashboard", "progress", "analytics"],
+    "language": "en"
+  },
+  {
+    "title": "Peer Interaction",
+    "text": "Students can participate in peer-to-peer doubt-solving sessions, enhancing collaborative learning and building a supportive community.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["community", "collaboration", "peer support"],
+    "language": "en"
+  },
+  {
+    "title": "Personalized Learning Plans",
+    "text": "PW creates customized study plans based on individual student needs and strengths, ensuring focused preparation.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["personalization", "learning plans", "strategy"],
+    "language": "en"
+  },
+  {
+    "title": "Regular Feedback",
+    "text": "Teachers provide regular feedback on performance, helping students stay motivated and on track with their studies.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["feedback", "motivation", "progress"],
+    "language": "en"
+  },
+  {
+    "title": "Mobile App Access",
+    "text": "Students can access classes and materials through a mobile app, allowing for learning on the go.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["mobile", "access anywhere", "app learning"],
+    "language": "en"
+  },
+  {
+    "title": "Learn from Home",
+    "text": "With PW, students can learn from home. This saves time and makes it easier to balance studies with other activities.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Why Choose PW",
+    "tags": ["flexibility", "home learning", "time saving"],
+    "language": "en"
+  },
+  {
+    "title": "Dedicated Faculties",
+    "text": "PW has dedicated faculties for each subject who helps the aspirants to understand the subjects.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Why Choose PW",
+    "tags": ["faculty", "subject experts", "guidance"],
+    "language": "en"
+  },
+  {
+    "title": "Well-Organized Study Material",
+    "text": "The coaching provides well-organized study materials. These materials cover all important topics needed for the JEE exams.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Why Choose PW",
+    "tags": ["study material", "jee syllabus", "organized resources"],
+    "language": "en"
+  },
+  {
+    "title": "Live Doubt-Solving Classes",
+    "text": "Students attend live classes where they can ask questions in real-time. This interaction helps clear doubts and improves understanding.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Why Choose PW",
+    "tags": ["live classes", "interaction", "doubt resolution"],
+    "language": "en"
+  },
+  {
+    "title": "Regular Mock Tests",
+    "text": "PW offers regular mock tests. These tests help students practice and prepare for the actual exam. They also help identify areas that need improvement.",
+    "category": "IIT JEE",
+    "course_type": "Online Coaching",
+    "section": "Why Choose PW",
+    "tags": ["mock tests", "exam practice", "performance improvement"],
+    "language": "en"
+  }
+]
+

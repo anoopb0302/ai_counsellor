@@ -1,0 +1,2 @@
+module SemanticSearchHelper
+end
