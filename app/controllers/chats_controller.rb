@@ -37,32 +37,85 @@ class ChatsController < ApplicationController
       "#{query}"
     PROMPT
 
-    answer = call_llm(prompt, 'phi3:mini')
+
+
+
+    session[:typing] = true
+    # Append user message without response
+    # chat_log_key = "SESSION_KEY:#{session.id}"
+
+    chat_log_key = SESSION_KEY.call(session.id)
+
+    chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
+    chat_log << { "query" => query, "response" => nil }
+    $redis.set(chat_log_key, chat_log.to_json)
+
+
+    # Set typing indicator in Redis
+    $redis.set("chat_typing:#{session.id}", true)
+
+
+    # answer = call_llm(prompt, 'phi3:mini')
+
+    # answer = 'Hey, I am still learning how to answer questions. Please try again later.'
 
     # Step 4: Save in Redis session chat log
-    chat_log_key = SESSION_KEY.call(session.id)
-    chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
-    chat_log << { query: query, response: answer }
-    $redis.set(chat_log_key, chat_log.last(20).to_json)
+    # chat_log_key = SESSION_KEY.call(session.id)
+    # chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
+    # chat_log << { query: query, response: answer }
 
+    # chat_log << {
+    #   "query" => query,
+    #   "response" => answer
+    #   }
 
-    # puts chat_log
-    # Step 5: Redirect to refresh chat UI
-    # redirect_to root_path
+    # $redis.set(chat_log_key, chat_log.last(20).to_json)
 
     # respond_to do |format|
-    #   format.html { redirect_to root_path }
     #   format.turbo_stream {
-    #     render turbo_stream: turbo_stream.replace("chat_box", partial: "chats/chat_box", locals: { chat_log: chat_log })
+    #     render turbo_stream: turbo_stream.replace(
+    #       "chat_box",
+    #       partial: "chats/chat_box",
+    #       locals: { chat_log: chat_log }
+    #     )
     #   }
+    #   format.html { redirect_to root_path }
     # end
 
+
+    LlmResponseJob.perform_later(session.id.to_s, query, prompt)
+
     respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.replace("chat_messages", partial: "chats/chat_box", locals: { chat_log: chat_log }),
+          turbo_stream.replace("chat_typing", partial: "chats/chat_typing")
+        ]
+      end
       format.html { redirect_to root_path }
-      format.turbo_stream {
-        render turbo_stream: turbo_stream.replace("chat_box", partial: "chats/chat_box", locals: { chat_log: chat_log })
-      }
     end
+
+    # Background thread to simulate async LLM response replaced with sidekiq job
+
+    # Thread.new do
+    #   answer = call_llm(prompt, 'phi3:mini')
+    #   chat_log.last["response"] = answer
+    #   $redis.set(chat_log_key, chat_log.to_json)
+    #   session[:typing] = false
+
+    #   Turbo::StreamsChannel.broadcast_replace_to(
+    #     session.id,
+    #     target: "chat_messages",
+    #     partial: "chats/chat_box",
+    #     locals: { chat_log: chat_log }
+    #   )
+
+    #   Turbo::StreamsChannel.broadcast_replace_to(
+    #     session.id,
+    #     target: "chat_typing",
+    #     content: "<turbo-frame id='chat_typing'></turbo-frame>" # clear typing indicator
+    #   )
+    # end
 
 
   end

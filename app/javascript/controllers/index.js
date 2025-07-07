@@ -6,3 +6,16 @@ import { application } from "./application"
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+
+// import { application } from "./application";
+
+import ChatController from "./chat_controller"
+application.register("chat", ChatController);
+
+
+// import { Application } from "@hotwired/stimulus"
+// import ChatController from "./chat_controller"
+
+// window.Stimulus = Application.start()
+// Stimulus.register("chat", ChatController)

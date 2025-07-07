@@ -1,3 +1,5 @@
+<%= turbo_stream_from session.id %>
+
 <!-- Outer Wrapper: enables full page scroll with centered content -->
 <div class="min-h-screen bg-gray-100 flex flex-col items-center px-4 py-6">
 
@@ -10,27 +12,23 @@
     </div>
 
     <!-- Chat Log (not scrollable, uses page scroll) -->
-    <turbo-frame id="chat_box">
-      <%= render "chat_box", chat_log: @chat_log %>
-    </turbo-frame>
+
+
+    <%= render "chat_box", chat_log: @chat_log %>
+
+    <%= render "chat_typing" if $redis.get("chat_typing:#{session.id}") %>
+
+    <turbo-frame id="chat_typing"></turbo-frame>
 
     <!-- Sticky Input Form -->
     <div class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0 z-10">
-      <%#= form_with url: chats_path, method: :post, data: { turbo_frame: "_top" }, class: "flex items-center space-x-3" do |form| %>
-        <%#= form.text_field :query, placeholder: "Ask anything...", autofocus: true, autocomplete: "off", class: "flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm" %>
-        <%#= form.submit "Send", class: "bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition shadow-sm" %>
-      <%# end %>
-
-      <%#= form_with url: chats_path, method: :post, class: "flex items-center space-x-3" do |form| %>
-        <%#= form.text_field :query, placeholder: "Ask anything...", autofocus: true, autocomplete: "off", class: "flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm" %>
-        <%#= form.submit "Send", class: "bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition shadow-sm" %>
-      <%# end %>
-      
 
       <%= form_with url: chats_path, method: :post, local: false, class: "flex items-center space-x-3" do |form| %>
         <%= form.text_field :query, placeholder: "Ask anything...", autofocus: true, autocomplete: "off", class: "flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm" %>
         <%= form.submit "Send", class: "bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition shadow-sm" %>
       <% end %>
+
+
 
 
     </div>
