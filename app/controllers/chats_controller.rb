@@ -22,18 +22,18 @@ class ChatsController < ApplicationController
     vector = embed_query(query)
 
     # Step 2: Semantic search
-    results = Chunk.order(Arel.sql("embedding <-> '[#{vector.join(',')}]'")).limit(3)
+    results = Chunk.order(Arel.sql("embedding <-> '[#{vector.join(',')}]'")).limit(1)
     context = results.map { |c| "#{c.title}: #{c.text.truncate(150)}" }.join("\n\n")
 
     # Step 3: Prompt LLM
     prompt = <<~PROMPT
       You are a helpful academic counselor for Physics Wallah.
 
-      Based on the following context:
+      Based on the following context.
 
       #{context}
 
-      Answer this question:
+      Answer this question wihthout questioning back:
       "#{query}"
     PROMPT
 

@@ -1,10 +1,11 @@
 <%= turbo_stream_from session.id %>
 
 <!-- Outer Wrapper: enables full page scroll with centered content -->
-<div class="min-h-screen bg-gray-100 flex flex-col items-center px-4 py-6">
+<!-- <div class="min-h-screen bg-gray-100 flex flex-col items-center px-4 py-6"> -->
+<div class="min-h-screen bg-white flex flex-col items-center px-4 py-6">
 
-  <!-- Chat Container -->
-  <div class="w-full max-w-3xl bg-white shadow-2xl rounded-3xl flex flex-col overflow-hidden">
+  <!-- Chat Container shadow-2xl removed-->
+  <div class="w-full max-w-5xl bg-white rounded-3xl flex flex-col overflow-hidden margin-bottom-[60px]">
 
     <!-- Header -->
     <div class="px-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
@@ -21,18 +22,42 @@
     <turbo-frame id="chat_typing"></turbo-frame>
 
     <!-- Sticky Input Form -->
-    <div class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0 z-10">
-
-      <%= form_with url: chats_path, method: :post, local: false, class: "flex items-center space-x-3" do |form| %>
-        <%= form.text_field :query, placeholder: "Ask anything...", autofocus: true, autocomplete: "off", class: "flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm" %>
-        <%= form.submit "Send", class: "bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition shadow-sm" %>
+    <div data-controller="chat" class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0 z-10">
+      <%= form_with url: chats_path, method: :post, local: false,
+            data: {
+              controller: "chat",
+              action: "turbo:submit-start->chat#disableForm"
+            },
+            class: "relative w-full" do |form| %>
+    
+        <!-- Textarea with embedded button -->
+        <%= form.text_area :query,
+              rows: 2,
+              data: {
+                chat_target: "input",
+                action: "input->chat#autoGrow keydown->chat#handleKeydown"
+              },
+              placeholder: "Send a message...",
+              autocomplete: "off",
+              class: "w-full pr-12 resize-none bg-gray-100 rounded-[28px] px-4 py-3 text-sm leading-6 border border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none shadow-sm max-h-40 overflow-y-auto" %>
+    
+        <!-- Floating Up Arrow Submit Button -->
+        <%= form.button type: "submit",
+              data: { chat_target: "submit" },
+              class: "absolute bottom-2.5 right-3 w-8 h-8 bg-[#7363fc] rounded-full flex items-center justify-center text-white hover:bg-[#5a4bda] transition disabled:opacity-50 disabled:cursor-not-allowed" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        <% end %>
+    
       <% end %>
-
-
-
-
     </div>
-
+  
   </div>
 
 </div>
+
+<!-- Empty container to receive trigger -->
+<div id="chat_utils"></div>
+
+<!-- <turbo-frame id="chat_utils" data-action="turbo:frame-load->chat#handleEnableEvent"></turbo-frame> -->

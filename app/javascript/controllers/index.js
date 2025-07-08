@@ -14,6 +14,9 @@ import ChatController from "./chat_controller"
 application.register("chat", ChatController);
 
 
+import ChatTriggerController from "./chat_trigger_controller"
+application.register("chat-trigger", ChatTriggerController)
+
 // import { Application } from "@hotwired/stimulus"
 // import ChatController from "./chat_controller"
 

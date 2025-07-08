@@ -5,7 +5,7 @@ require 'uri'
 namespace :chunks do
   desc "Import and embed chunks from JSON"
   task import: :environment do
-    file_path = Rails.root.join("db", "course_chunk_1.json")
+    file_path = Rails.root.join("db", "course_qa_chunk.json")
     unless File.exist?(file_path)
       puts "File not found: #{file_path}"
       exit

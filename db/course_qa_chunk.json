@@ -1,0 +1,83 @@
+[
+  {
+    "title": "Live Classes",
+    "text": "Q: How do I update my billing info?\nA: Go to Billing Settings and click 'Update Payment Method'.",
+    "category": "Billing",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["billing", "doubt resolution"],
+    "language": "en"
+  },
+  {
+    "title": "Recorded Lectures",
+    "text": "Q: How do I access recorded lectures?\nA: Recorded lectures are available in the course dashboard under 'My Lectures'.",
+    "category": "Course Access",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["recorded lectures", "course access"],
+    "language": "en"
+  },
+  {
+    "title": "Doubt Resolution",
+    "text": "Q: How can I resolve my doubts?\nA: You can ask questions during live classes or post them in the discussion forum.",
+    "category": "Support",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["doubt resolution", "support"],
+    "language": "en"
+  },
+  {
+    "title": "Mock Tests",
+    "text": "Q: How do I take mock tests?\nA: Mock tests are available in the 'Tests' section of your dashboard. You can take them anytime.",
+    "category": "Assessment",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["mock tests", "assessment"],
+    "language": "en"
+  },
+  {
+    "title": "Performance Tracking",
+    "text": "Q: How can I track my performance?\nA: Your performance dashboard shows your progress, attendance, and grades.",
+    "category": "Analytics",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["performance tracking", "analytics"],
+    "language": "en"
+  },
+  {
+    "title": "Peer Interaction",
+    "text": "Q: How can I interact with peers?\nA: You can join peer-to-peer doubt-solving sessions scheduled weekly.",
+    "category": "Community",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["peer interaction", "community"],
+    "language": "en"
+  },
+  {
+    "title": "Study Material",
+    "text": "Q: Where can I find study materials?\nA: Comprehensive study materials are available in the 'Resources' section of your course.",
+    "category": "Resources",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["study material", "resources"],
+    "language": "en"
+  },
+  {
+    "title": "Live Doubt Sessions",
+    "text": "Q: When are live doubt sessions held?\nA: Live doubt sessions are scheduled every Saturday at 5 PM.",
+    "category": "Support",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["live sessions", "doubt resolution"],
+    "language": "en"
+  },
+  {
+    "title": "Course Feedback",
+    "text": "Q: How can I provide feedback on the course?\nA: You can submit feedback through the 'Feedback' section in your dashboard.",
+    "category": "Feedback",
+    "course_type": "Online Coaching",
+    "section": "Features",
+    "tags": ["course feedback", "user feedback"],
+    "language": "en"
+  }
+]

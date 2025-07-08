@@ -35,6 +35,63 @@ class LlmResponseJob < ApplicationJob
       target: "chat_typing",
       content: "<turbo-frame id='chat_typing'></turbo-frame>"
     )
+
+
+    Turbo::StreamsChannel.broadcast_append_to(
+      session_id,
+      target: "chat_utils",
+      content: <<~HTML
+        <div data-controller="chat-trigger"></div>
+      HTML
+    )
+
+    # Turbo::StreamsChannel.broadcast_append_to(
+    #   session_id,
+    #   target: "chat_utils",
+    #   content: <<~HTML
+    #     <div data-action="chat#handleEnableEvent"></div>
+    #   HTML
+    # )
+
+    # Turbo::StreamsChannel.broadcast_replace_to(
+    #   session_id,
+    #   target: "chat_utils",
+    #   content: <<~HTML
+    #     <turbo-frame id="chat_utils" data-action="turbo:frame-load->chat#handleEnableEvent">
+    #       <!-- Optional: empty body -->
+    #     </turbo-frame>
+    #   HTML
+    # )
+    # Turbo::StreamsChannel.broadcast_append_to(
+    #   session_id,
+    #   target: "chat_utils",
+    #   content: <<~HTML
+    #     <div data-action="chat#handleEnableEvent" data-enable="true"></div>
+    #   HTML
+    # )
+    
+    # Turbo::StreamsChannel.broadcast_append_to(
+    #   session_id,
+    #   target: "chat_utils", # this will be an invisible frame
+    #   content: <<~HTML
+    #     <turbo-stream action="append" target="chat_utils">
+    #       <template>
+    #         <div data-action="chat#enableForm"></div>
+    #       </template>
+    #     </turbo-stream>
+    #   HTML
+    # )
+
+    # Turbo::StreamsChannel.broadcast_replace_to(
+    #   session_id,
+    #   target: "chat_utils",
+    #   content: <<~HTML
+    #     <turbo-frame id="chat_utils">
+    #       <div data-controller="chat-trigger" data-chat-trigger-target="dummy" data-action="chat-trigger#enableForm"></div>
+    #     </turbo-frame>
+    #   HTML
+    # )
+
   end
 
   private
