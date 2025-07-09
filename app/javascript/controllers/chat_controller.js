@@ -55,7 +55,8 @@ export default class extends Controller {
     console.log("🟡 Disabling form...")
     this.inputTarget.disabled = true
     this.submitTarget.disabled = true
-    this.submitTarget.innerText = "Thinking..."
+    this.submitTarget.innerText = "..."
+    this.scrollToBottom()
 
     this.timeout = setTimeout(() => {
       console.warn("⏱️ LLM timeout - re-enabling form")
@@ -74,7 +75,7 @@ export default class extends Controller {
     clearTimeout(this.timeout)
     this.inputTarget.disabled = false
     this.submitTarget.disabled = false
-    this.submitTarget.innerText = "Send"
+    this.submitTarget.innerText = "↑"
     this.inputTarget.value = ""
     this.scrollToBottom()
 

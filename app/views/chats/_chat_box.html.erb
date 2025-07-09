@@ -1,5 +1,5 @@
 <turbo-frame id="chat_messages">
-  <div class="px-6 py-4 space-y-6 scroll-smooth">
+  <div data-controller="chat" class="px-6 py-4 space-y-6">
     <% chat_log&.each do |entry| %>
       <div class="space-y-2">
         <!-- User Message -->

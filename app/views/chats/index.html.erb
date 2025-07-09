@@ -5,7 +5,7 @@
 <div class="min-h-screen bg-white flex flex-col items-center px-4 py-6">
 
   <!-- Chat Container shadow-2xl removed-->
-  <div class="w-full max-w-5xl bg-white rounded-3xl flex flex-col overflow-hidden margin-bottom-[60px]">
+  <div class="w-full max-w-5xl bg-white rounded-3xl flex flex-col overflow-hidden">
 
     <!-- Header -->
     <div class="px-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
@@ -22,6 +22,8 @@
     <turbo-frame id="chat_typing"></turbo-frame>
 
     <!-- Sticky Input Form -->
+
+    
     <div data-controller="chat" class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0 z-10">
       <%= form_with url: chats_path, method: :post, local: false,
             data: {
@@ -45,9 +47,7 @@
         <%= form.button type: "submit",
               data: { chat_target: "submit" },
               class: "absolute bottom-2.5 right-3 w-8 h-8 bg-[#7363fc] rounded-full flex items-center justify-center text-white hover:bg-[#5a4bda] transition disabled:opacity-50 disabled:cursor-not-allowed" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+          ↑
         <% end %>
     
       <% end %>
