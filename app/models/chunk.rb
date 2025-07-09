@@ -11,6 +11,8 @@ class Chunk < ApplicationRecord
   scope :by_subcategory, ->(subcat) { where(subcategory: subcat) }
   scope :by_language, ->(lang) { where(language: lang) }
 
+  CATEGORIES = ["General", "Board", "CUET", "GATE", "IIT JEE", "NEET", "Olympiad"]
+
   private
 
   def tags_must_be_array
