@@ -1,6 +1,9 @@
 class LlmPromptBuilder
-  def initialize(query)
+  def initialize(query, session_id)
     @query = query.strip
+    @session_id = session_id
+    @chat_log_key = "chat_log:#{session_id}"
+    @memory_key = "chat_memory:#{session_id}" 
   end
 
   def build_prompt
@@ -34,20 +37,56 @@ class LlmPromptBuilder
 
     Rails.logger.info "context: #{context}"
 
+    # chat_log_key = "chat:session:#{@session_id}"
+
+
+    # chat_log_key = @chat_log_key
+
+    chat_log = JSON.parse($redis.get(@chat_log_key) || "[]")
+
+    # chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
+
+    # Get last 3 user-assistant turns (excluding the current query)
+    history_lines = chat_log.last(1).reject { |h| h["response"].nil? }.map do |turn|
+      "Student: #{turn["query"]}\nCounselor: #{turn["response"]}"
+    end
+
+    history_block = history_lines.join("\n")
+
+    history_block = ""
+
+    Rails.logger.info "history_block: #{history_block}"
+
+    memory_block, fact_block = ChatMemoryManager.new(@session_id).fetch
+    Rails.logger.info "memory_block: #{memory_block}"
+    Rails.logger.info "---------------------------------------------"
+
+    Rails.logger.info "fact_block: #{fact_block}"
+
+
+    facts = JSON.parse(fact_block || "{}")
+    if facts.any?
+      fact_lines = facts.map { |k, v| "#{k.capitalize}: #{v}" }.join("\n")
+      memory_block += "Student Facts:\n#{fact_lines}\n\n"
+    end
 
     <<~PROMPT
       You are a helpful AI counselor for PhysicsWallah students.
 
-      Answer the following question based on the provided context. If the answer is not found in the context, say "I'm not sure about that" rather than guessing.
+      This is a conversation between a student and you. Plase respond in 2-3 lines.
+
+      #{history_block}
+      
+      #{memory_block}
 
       Context:
       #{context}
 
-      Question:
-      #{@query}
-
-      Answer:
+      Student: #{@query}
+      Counselor:
     PROMPT
+
+
   end
 
   private

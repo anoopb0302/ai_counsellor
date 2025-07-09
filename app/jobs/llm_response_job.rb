@@ -13,11 +13,19 @@ class LlmResponseJob < ApplicationJob
     chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
 
     # Run the LLM
-    answer = call_llm(prompt, 'phi3:mini')
+    answer = call_llm(prompt.truncate(1500), 'phi3:mini')
 
     # Update last message with response
     chat_log.last["response"] = answer
     $redis.set(chat_log_key, chat_log.to_json)
+
+    #after updating chat_log
+    # ChatMemoryManager.new(session_id).summarize_and_store
+    ChatMemoryJob.perform_later(session_id)
+
+    # ChatSummaryJob.perform_later(session_id)
+    # ChatFactsJob.perform_later(session_id)
+    
 
     # Clear typing state
     $redis.del("chat_typing:#{session_id}")
