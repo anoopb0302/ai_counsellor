@@ -53,7 +53,7 @@ class LlmPromptBuilder
 
     history_block = history_lines.join("\n")
 
-    history_block = ""
+    # history_block = ""
 
     Rails.logger.info "history_block: #{history_block}"
 
