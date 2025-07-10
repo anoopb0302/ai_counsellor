@@ -65,7 +65,7 @@ class ChatSummaryJob < ApplicationJob
       Keep the updated summary brief (max 3 lines) and only reflect new or clarified details.
 
       Previous Summary:
-      #{last_summary.presence || "(none)"}
+      #{old_summary.presence || "(none)"}
 
       New Chat:
       #{chat_log.last(1).map { |c| "Student: #{c['query']}\nCounselor: #{c['response']}" }.join("\n")}
@@ -74,9 +74,13 @@ class ChatSummaryJob < ApplicationJob
     PROMPT
 
 
-
     updated_summary = call_llm(summary_prompt).strip
     puts "Updated summary: #{updated_summary}"
+
+    # Create a sentiment job to analyze the updated summary
+    # This will run after the summary is updated
+    ChatSentimentJob.perform_later(session_id)
+
     Rails.logger.info "[SUMMARY] Updated summary for session #{session_id}: #{updated_summary}"
     $redis.set("chat_memory:#{session_id}", updated_summary)
   end

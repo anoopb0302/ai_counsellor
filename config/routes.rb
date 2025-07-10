@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'reports/index'
+    get 'reports/show'
+  end
   get 'chats/index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -12,4 +16,8 @@ Rails.application.routes.draw do
 
   resources :chats, only: [:index, :create]
 
+  namespace :admin do
+    resources :reports, only: [:index, :show]
+  end
+  
 end

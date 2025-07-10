@@ -10,7 +10,24 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-gray-50 text-gray-800">
+
+    <!-- NAVBAR -->
+    <header class="bg-white shadow sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <%= image_tag "pw_image.jpeg", alt: "Physics Wallah", class: "h-10 w-auto" %>
+          <h1 class="text-xl font-bold text-gray-800">PW Counselor</h1>
+        </div>
+        <div class="text-sm text-gray-500 hidden sm:block">
+          <span>Built with ❤️ by FOSS Team</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="p-6">
+      <%= yield %>
+    </main>
   </body>
 </html>

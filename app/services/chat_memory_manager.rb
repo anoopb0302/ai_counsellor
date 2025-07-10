@@ -97,4 +97,4 @@ class ChatMemoryManager
 #     res = Net::HTTP.start(uri.hostname, uri.port) { |http| http.request(req) }
 #     JSON.parse(res.body)["response"]
 #   end
-# end
+end

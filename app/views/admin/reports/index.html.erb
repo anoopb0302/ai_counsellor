@@ -1,0 +1,68 @@
+<!-- app/views/admin/reports/index.html.erb -->
+
+<h1 class="text-3xl font-bold mb-6">Admin Chat Sessions Report</h1>
+
+<!-- FILTERS -->
+<%= form_with url: admin_reports_path, method: :get, local: true, class: "mb-6 grid md:grid-cols-4 gap-4" do %>
+  <%= text_field_tag :name, @filters[:name], placeholder: "Search by name", class: "w-full border rounded p-2" %>
+
+  <%= select_tag :goal,
+      options_for_select([["All Goals", ""], "IIT JEE", "NEET", "GATE"], @filters[:goal]),
+      class: "w-full border rounded p-2" %>
+
+  <%= select_tag :sentiment,
+      options_for_select([["All Sentiments", ""], "POSITIVE", "NEUTRAL", "NEGATIVE"], @filters[:sentiment]),
+      class: "w-full border rounded p-2" %>
+
+  <%= submit_tag "Filter", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+<% end %>
+
+<!-- TABLE -->
+<div class="overflow-x-auto">
+  <table class="min-w-full text-sm border rounded shadow bg-white">
+    <thead class="bg-gray-100 sticky top-0 z-10">
+      <tr>
+        <th class="p-3 text-left border-b">Session ID</th>
+        <th class="p-3 text-left border-b">Name</th>
+        <th class="p-3 text-left border-b">Goal</th>
+        <th class="p-3 text-left border-b">Exam</th>
+        <th class="p-3 text-left border-b">Year</th>
+        <th class="p-3 text-left border-b">Sentiment</th>
+        <th class="p-3 text-left border-b">View</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sessions.each do |s| %>
+        <% facts = s[:facts] || {} %>
+        <% sentiment = s[:sentiment].present? ? JSON.parse(s[:sentiment]) : {} %>
+        <tr class="hover:bg-gray-50 transition">
+          <td class="p-3 border-b font-mono text-xs"><%= s[:id] %></td>
+          <td class="p-3 border-b"><%= facts["name"] || "-" %></td>
+          <td class="p-3 border-b"><%= facts["goal"] || "-" %></td>
+          <td class="p-3 border-b"><%= facts["exam"] || "-" %></td>
+          <td class="p-3 border-b"><%= facts["year"] || "-" %></td>
+          <td class="p-3 border-b">
+            <% if sentiment["label"] %>
+              <span class="text-xs font-semibold px-2 py-1 rounded
+                <%=
+                  case sentiment["label"]
+                  when "POSITIVE" then 'bg-green-100 text-green-800'
+                  when "NEGATIVE" then 'bg-red-100 text-red-800'
+                  else 'bg-gray-100 text-gray-800'
+                  end
+                %>">
+                <%= sentiment["label"] %> (<%= sentiment["score"] %>%)
+              </span>
+            <% else %>
+              <span class="text-gray-400 text-xs">–</span>
+            <% end %>
+          </td>
+          <td class="p-3 border-b">
+            <%= link_to "View", admin_report_path(s[:id]),
+                        class: "text-blue-600 hover:underline text-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
