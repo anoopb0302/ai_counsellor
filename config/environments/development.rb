@@ -41,6 +41,7 @@ Rails.application.configure do
     namespace: "pwdev:cache"
   }
 
+  config.hosts << "pwcounsellor.foss.health"
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
