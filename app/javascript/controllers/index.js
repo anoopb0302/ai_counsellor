@@ -17,6 +17,13 @@ application.register("chat", ChatController);
 import ChatTriggerController from "./chat_trigger_controller"
 application.register("chat-trigger", ChatTriggerController)
 
+
+import AccordionController from "./accordion_controller"
+application.register("accordion", AccordionController)
+
+// import AccordionController from "./controllers/accordion_controller"
+// application.register("accordion", AccordionController)
+
 // import { Application } from "@hotwired/stimulus"
 // import ChatController from "./chat_controller"
 
