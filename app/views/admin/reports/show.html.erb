@@ -22,7 +22,7 @@
 <% end %>
 
 <!-- Sentiment -->
-<% sentiment = JSON.parse($redis.get("chat_sentiment:#{params[:id]}") || "{}") %>
+<% sentiment = @sentiment %>
 <% if sentiment.any? %>
   <div class="mb-6 p-4 bg-blue-50 border rounded">
     <h2 class="font-semibold mb-2">Sentiment</h2>

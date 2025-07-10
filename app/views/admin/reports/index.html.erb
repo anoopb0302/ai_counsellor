@@ -3,95 +3,129 @@
 <h1 class="text-3xl font-bold mb-6">Admin Chat Sessions Report</h1>
 <div data-controller="accordion">
 
-<!-- FILTERS -->
-<%= form_with url: admin_reports_path, method: :get, local: true, class: "mb-6 grid md:grid-cols-4 gap-4" do %>
-  <%= text_field_tag :name, @filters[:name], placeholder: "Search by name", class: "w-full border rounded p-2" %>
+  <!-- FILTERS -->
+  <%= form_with url: admin_reports_path, method: :get, local: true, class: "mb-6 grid md:grid-cols-5 gap-4" do %>
+    <%= text_field_tag :name, @filters[:name], placeholder: "Search by name", class: "w-full border rounded p-2" %>
 
-  <%= select_tag :goal,
-      options_for_select([["All Goals", ""], "IIT JEE", "NEET", "GATE"], @filters[:goal]),
-      class: "w-full border rounded p-2" %>
+    <%= select_tag :goal,
+        options_for_select([["All Goals", ""], "IIT JEE", "NEET", "GATE"], @filters[:goal]),
+        class: "w-full border rounded p-2" %>
 
-  <%= select_tag :sentiment,
-      options_for_select([["All Sentiments", ""], "POSITIVE", "NEUTRAL", "NEGATIVE"], @filters[:sentiment]),
-      class: "w-full border rounded p-2" %>
+    <%= select_tag :sentiment,
+        options_for_select([["All Sentiments", ""], "POSITIVE", "NEUTRAL", "NEGATIVE"], @filters[:sentiment]),
+        class: "w-full border rounded p-2" %>
 
-  <%= submit_tag "Filter", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
-<% end %>
+    <%= select_tag :relevance,
+        options_for_select([["All Relevance", ""], "HIGH", "MEDIUM", "LOW"], @filters[:relevance]),
+        class: "w-full border rounded p-2" %>
 
-<!-- TABLE -->
-<div class="overflow-x-auto">
-  <table class="min-w-full text-sm border rounded shadow bg-white">
-    <thead class="bg-gray-100 sticky top-0 z-10">
-      <tr>
-        <th class="p-3 text-left border-b">Sr No.</th>
-        <th class="p-3 text-left border-b">Lead Rank</th>
-        <th class="p-3 text-left border-b">Exam</th>
-        <th class="p-3 text-left border-b">Name</th>
-        <th class="p-3 text-left border-b">Goal</th>
-        <th class="p-3 text-left border-b">Year</th>
-        <th class="p-3 text-left border-b">View</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @sessions.each_with_index do |s, index| %>
-        <% facts = s[:facts] || {} %>
-        <% sentiment = s[:sentiment].present? ? JSON.parse(s[:sentiment]) : {} %>
-        <tr class="hover:bg-gray-50 transition cursor-pointer"
-          data-action="click->accordion#toggle"
-          data-accordion-target="row"
-          data-session-id="<%= s[:id] %>">
+    <%= submit_tag "Filter", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  <% end %>
 
-          <td class="p-3 border-b text-xs font-semibold text-gray-700"><%= index + 1 %></td>
-
-          <td class="p-3 border-b">
-            <% if sentiment["label"] %>
-              <span class="text-xs font-semibold px-2 py-1 rounded
-                <%=
-                  case sentiment["label"]
-                  when "POSITIVE" then 'bg-green-100 text-green-800'
-                  when "NEGATIVE" then 'bg-red-100 text-red-800'
-                  else 'bg-gray-100 text-gray-800'
-                  end
-                %>">
-                <%= sentiment["label"] %> (<%= sentiment["score"] %>)
-              </span>
-            <% else %>
-              <span class="text-gray-400 text-xs">–</span>
-            <% end %>
-          </td>
-          <td class="p-3 border-b"><%= facts["exam"] || "-" %></td>
-
-          <td class="p-3 border-b"><%= facts["name"] || "-" %></td>
-          <td class="p-3 border-b"><%= facts["goal"] || "-" %></td>
-          <td class="p-3 border-b"><%= facts["year"] || "-" %></td>
-
-          <td class="p-3 border-b">
-            <%= link_to "View", admin_report_path(s[:id]),
-                        class: "text-blue-600 hover:underline text-sm" %>
-          </td>
+  <!-- TABLE -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm border rounded shadow bg-white">
+      <thead class="bg-gray-100 sticky top-0 z-10">
+        <tr>
+          <th class="p-3 text-left border-b">Sr No.</th>
+          <th class="p-3 text-left border-b">Lead's Relevance</th>
+          <th class="p-3 text-left border-b">Lead's Sentiment</th>
+          <th class="p-3 text-left border-b">Exam</th>
+          <th class="p-3 text-left border-b">Name</th>
+          <th class="p-3 text-left border-b">Goal</th>
+          <th class="p-3 text-left border-b">Year</th>
+          <th class="p-3 text-left border-b">View</th>
         </tr>
+      </thead>
+      <tbody>
+        <% @sessions.each_with_index do |s, index| %>
+          <% facts = s[:facts] || {} %>
+          <% sentiment = s[:sentiment] || {} %>
+          <% relevance = s[:relevance] || {} %>
 
-        <tr class="hidden bg-gray-50" data-accordion-target="details" data-session-id="<%= s[:id] %>">
-          <td colspan="7" class="p-4">
-            <% summary = s[:summary] %>
-            <p class="text-sm mb-2 text-gray-700"><strong>Summary:</strong> <%= summary || "–" %></p>
+          <tr class="hover:bg-gray-50 transition cursor-pointer"
+              data-action="click->accordion#toggle"
+              data-accordion-target="row"
+              data-session-id="<%= s[:id] %>">
 
-            <% if facts.present? %>
-              <div class="text-sm bg-white border rounded p-3">
-                <h4 class="font-semibold text-gray-700 mb-1">Student Facts:</h4>
-                <ul class="list-disc ml-5 text-gray-600">
-                  <% facts.each do |k, v| %>
-                    <li><strong><%= k.humanize %>:</strong> <%= v %></li>
-                  <% end %>
-                </ul>
-              </div>
-            <% else %>
-              <p class="text-gray-400 text-sm">No facts available.</p>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+            <td class="p-3 border-b text-xs font-semibold text-gray-700"><%= index + 1 %></td>
+
+
+
+            <!-- Relevance -->
+            <td class="p-3 border-b">
+              <% if relevance["score"] %>
+                <span class="text-xs font-semibold px-2 py-1 rounded
+                  <%=
+                    case relevance["score"]
+                    when "HIGH" then 'bg-green-100 text-green-800'
+                    when "MEDIUM" then 'bg-yellow-100 text-yellow-800'
+                    when "LOW" then 'bg-red-100 text-red-800'
+                    else 'bg-gray-100 text-gray-800'
+                    end
+                  %>">
+                  <%= relevance["label"] %> (<%= relevance["score"] %>)
+                </span>
+              <% else %>
+                <span class="text-gray-400 text-xs">–</span>
+              <% end %>
+            </td>
+
+            <!-- Sentiment -->
+            <td class="p-3 border-b">
+              <% if sentiment["label"] %>
+                <span class="text-xs font-semibold px-2 py-1 rounded
+                  <%=
+                    case sentiment["label"]
+                    when "POSITIVE" then 'bg-green-100 text-green-800'
+                    when "NEGATIVE" then 'bg-red-100 text-red-800'
+                    else 'bg-gray-100 text-gray-800'
+                    end
+                  %>">
+                  <%= sentiment["label"] %> (<%= sentiment["score"] %>)
+                </span>
+              <% else %>
+                <span class="text-gray-400 text-xs">–</span>
+              <% end %>
+            </td>
+
+
+            <td class="p-3 border-b"><%= facts["exam"] || "-" %></td>
+            <td class="p-3 border-b"><%= facts["name"] || "-" %></td>
+            <td class="p-3 border-b"><%= facts["goal"] || "-" %></td>
+            <td class="p-3 border-b"><%= facts["year"] || "-" %></td>
+
+            <td class="p-3 border-b">
+              <%= link_to "View", admin_report_path(s[:id]),
+                          class: "text-blue-600 hover:underline text-sm" %>
+            </td>
+          </tr>
+
+          <!-- Accordion row -->
+          <tr class="hidden bg-gray-50" data-accordion-target="details" data-session-id="<%= s[:id] %>">
+            <td colspan="8" class="p-4">
+              <% summary = s[:summary] %>
+              <p class="text-sm mb-2 text-gray-700">
+                <strong>Summary:</strong> <%= summary || "–" %>
+              </p>
+
+              <% if facts.present? %>
+                <div class="text-sm bg-white border rounded p-3">
+                  <h4 class="font-semibold text-gray-700 mb-1">Student Facts:</h4>
+                  <ul class="list-disc ml-5 text-gray-600">
+                    <% facts.each do |k, v| %>
+                      <li><strong><%= k.humanize %>:</strong> <%= v %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% else %>
+                <p class="text-gray-400 text-sm">No facts available.</p>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
-</div>
+<%= link_to "Export to CSV", admin_reports_path(format: :csv), class: "mt-6 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>

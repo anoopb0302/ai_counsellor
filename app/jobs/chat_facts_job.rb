@@ -79,7 +79,7 @@ class ChatFactsJob < ApplicationJob
         "location": "Student's location if mentioned",
         "education": "Current education level if mentioned",
         "interests": "Student's interests if mentioned",
-        "goal": "Short goal like 'Crack NEET/IIT JEE/GATE 2026'",
+        "goal": "Like 'NEET' or 'IIT JEE' or 'GATE' or similar",
         "exam": "Mentioned exam like NEET/IIT JEE/GATE etc.",
         "year": "Target year if mentioned",
         "language": "Preferred language if mentioned",

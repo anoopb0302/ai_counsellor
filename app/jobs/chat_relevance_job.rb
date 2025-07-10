@@ -57,13 +57,13 @@ class ChatRelevanceJob < ApplicationJob
       Sentiment:
       #{sentiment}
 
-      Chat:
+      Chat Messages:
       #{chat_log.last(5).map { |c| "Student: #{c['query']}\nCounselor: #{c['response']}" }.join("\n")}
 
       Respond in this JSON format:
       {
-        "relevance": "RELEVANT" | "OFF_TOPIC" | "PARTIALLY_RELEVANT",
-        "score": "0 to 100",
+        "relevance": "HIGH" or "MEDIUM" or "LOW" or "OFF_TOPIC",
+        "score": "Relevance score in percentage (0-100)",
         "summary": "Brief explanation about why it is or isn’t relevant"
       }
 

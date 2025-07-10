@@ -20,7 +20,7 @@ class ChatSentimentJob < ApplicationJob
 
       You are a sentiment extractor AI for a student counselor. You will be given a session summary and the latest message from the student.
 
-      Use this format:
+      Respond in this JSON format:
       {
         "label": "POSITIVE" or "NEGATIVE" or "NEUTRAL",
         "score": "Sentiment score in percentage (0-100)",
