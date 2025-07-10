@@ -63,12 +63,15 @@ class LlmPromptBuilder
 
     Rails.logger.info "fact_block: #{fact_block}"
 
-
+    memory_block ||= ""
+  
     facts = JSON.parse(fact_block || "{}")
     if facts.any?
       fact_lines = facts.map { |k, v| "#{k.capitalize}: #{v}" }.join("\n")
       memory_block += "Student Facts:\n#{fact_lines}\n\n"
     end
+
+
 
     <<~PROMPT
       You are a helpful AI counselor for PhysicsWallah students.
