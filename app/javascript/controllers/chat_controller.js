@@ -80,7 +80,6 @@ export default class extends Controller {
     this.scrollToBottom()
 
   }
-  
 
   scrollToBottom() {
     requestAnimationFrame(() => {

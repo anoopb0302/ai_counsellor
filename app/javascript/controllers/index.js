@@ -21,6 +21,9 @@ application.register("chat-trigger", ChatTriggerController)
 import AccordionController from "./accordion_controller"
 application.register("accordion", AccordionController)
 
+import PromtController from "./prompt_controller"
+application.register("prompt", PromtController)
+
 // import AccordionController from "./controllers/accordion_controller"
 // application.register("accordion", AccordionController)
 

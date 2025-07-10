@@ -1,63 +1,110 @@
+<!-- app/views/chats/index.html.erb -->
+
 <%= turbo_stream_from session.id %>
 
-<!-- Outer Wrapper: enables full page scroll with centered content -->
-<!-- <div class="min-h-screen bg-gray-100 flex flex-col items-center px-4 py-6"> -->
-<div class="min-h-screen bg-white flex flex-col items-center px-4 py-6">
+<div class="min-h-screen flex bg-white overflow-hidden">
 
-  <!-- Chat Container shadow-2xl removed-->
-  <div class="w-full max-w-5xl bg-white rounded-3xl flex flex-col overflow-hidden">
+  <!-- Sidebar (Sticky and Scrollable) -->
+  <div data-controller="prompt" class="hidden md:block w-64 bg-gray-50 border-r border-gray-200 px-4 py-6 overflow-y-auto fixed top-0 h-screen">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">✨ Suggested Prompts</h2>
 
-    <!-- Header -->
-    <div class="px-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
-      <h1 class="text-xl font-semibold text-gray-800">💬 PW AI Counselor</h1>
-    </div>
+    <% facts = JSON.parse($redis.get("chat_facts:#{session.id}") || "{}") rescue {} %>
+    <% goal_text = facts["goal"].to_s.downcase %>
 
-    <!-- Chat Log (not scrollable, uses page scroll) -->
+    <% all_prompts = {
+      "iit" => [
+        "Best books for JEE Advanced physics?",
+        "What is the syllabus for JEE Main?",
+        "How to manage board exams with JEE prep?",
+        "I am good in chemistry and math but week in physics for JEE",
+        "what are the courses available ?",
+        "I am looking for a crash course in physics",
+        "Thanks for the help, send me the information on leo.vibe@keepvibing.edu" 
+      ],
+      "neet" => [
+        "Top NEET colleges in India?",
+        "What is a safe NEET score for MBBS?",
+        "Suggest a NEET 2026 study plan"
+      ],
+      "gate" => [
+        "Can I crack GATE in 6 months?",
+        "Is coaching necessary for GATE?",
+        "What is the GATE 2026 exam pattern?"
+      ],
+      "general" => [
+        "What exams should I prepare for?",
+        "Tell me about career options after 12th.",
+        "How do I stay motivated for competitive exams?"
+      ]
+    } %>
 
+    <% matched_keys = all_prompts.keys.select { |k| goal_text.include?(k) } %>
+    <% matched_keys = ["general"] if matched_keys.empty? %>
 
-    <%= render "chat_box", chat_log: @chat_log %>
+    <% matched_keys.each do |key| %>
 
-    <%= render "chat_typing" if $redis.get("chat_typing:#{session.id}") %>
+    <% next unless all_prompts[key] %>
 
-    <turbo-frame id="chat_typing"></turbo-frame>
-
-    <!-- Sticky Input Form -->
-
-    
-    <div data-controller="chat" class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0 z-10">
-      <%= form_with url: chats_path, method: :post, local: false,
-            data: {
-              controller: "chat",
-              action: "turbo:submit-start->chat#disableForm"
-            },
-            class: "relative w-full" do |form| %>
-    
-        <!-- Textarea with embedded button -->
-        <%= form.text_area :query,
-              rows: 2,
-              data: {
-                chat_target: "input",
-                action: "input->chat#autoGrow keydown->chat#handleKeydown"
-              },
-              placeholder: "Send a message...",
-              autocomplete: "off",
-              class: "w-full pr-12 resize-none bg-gray-100 rounded-[28px] px-4 py-3 text-sm leading-6 border border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none shadow-sm max-h-40 overflow-y-auto" %>
-    
-        <!-- Floating Up Arrow Submit Button -->
-        <%= form.button type: "submit",
-              data: { chat_target: "submit" },
-              class: "absolute bottom-2.5 right-3 w-8 h-8 bg-[#7363fc] rounded-full flex items-center justify-center text-white hover:bg-[#5a4bda] transition disabled:opacity-50 disabled:cursor-not-allowed" do %>
-          ↑
-        <% end %>
-    
-      <% end %>
-    </div>
-  
+      <div class="mb-4">
+        <h3 class="font-semibold text-sm text-gray-600 mb-1"><%= key.upcase %> Prompts</h3>
+        <div class="space-y-2">
+            <% all_prompts[key].each do |prompt| %>
+            
+            <button
+              data-action="click->prompt#fillPrompt"
+              data-chat-prompt="<%= prompt %>"
+              class="block w-full text-left px-3 py-2 bg-white border border-gray-200 rounded hover:bg-blue-50 text-sm">
+              <%= prompt %>
+            </button>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 
+  <!-- Chat Area -->
+  <div class="flex-1 flex flex-col items-center px-4 py-6">
+    <div class="w-full max-w-5xl bg-white rounded-3xl flex flex-col overflow-hidden">
+
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+        <h1 class="text-xl font-semibold text-gray-800">💬 PW AI Counselor</h1>
+      </div>
+
+      <!-- Chat Log -->
+      <%= render "chat_box", chat_log: @chat_log %>
+      <%= render "chat_typing" if $redis.get("chat_typing:#{session.id}") %>
+      <turbo-frame id="chat_typing"></turbo-frame>
+
+      <!-- Input Box -->
+      <div data-controller="chat" class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0 z-10">
+        <%= form_with url: chats_path, method: :post, local: false,
+              data: {
+                controller: "chat",
+                action: "turbo:submit-start->chat#disableForm"
+              },
+              class: "relative w-full" do |form| %>
+
+          <%= form.text_area :query,
+                rows: 2,
+                data: {
+                  chat_target: "input",
+                  action: "input->chat#autoGrow keydown->chat#handleKeydown"
+                },
+                placeholder: "Send a message...",
+                autocomplete: "off",
+                class: "w-full pr-12 resize-none bg-gray-100 rounded-[28px] px-4 py-3 text-sm leading-6 border border-gray-200 focus:ring-1 focus:ring-gray-300 focus:outline-none shadow-sm max-h-40 overflow-y-auto" %>
+
+          <%= form.button type: "submit",
+                data: { chat_target: "submit" },
+                class: "absolute bottom-2.5 right-3 w-8 h-8 bg-[#7363fc] rounded-full flex items-center justify-center text-white hover:bg-[#5a4bda] transition disabled:opacity-50 disabled:cursor-not-allowed" do %>
+            ↑
+          <% end %>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Empty container to receive trigger -->
 <div id="chat_utils"></div>
-
-<!-- <turbo-frame id="chat_utils" data-action="turbo:frame-load->chat#handleEnableEvent"></turbo-frame> -->

@@ -37,6 +37,9 @@ class ChatSentimentJob < ApplicationJob
     PROMPT
 
     sentiment = call_llm(prompt)
+
+    ChatRelevanceJob.perform_later(session_id)
+
     $redis.set(sentiment_key, sentiment.strip)
   end
 
