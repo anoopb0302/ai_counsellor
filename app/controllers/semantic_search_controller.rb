@@ -23,6 +23,7 @@ class SemanticSearchController < ApplicationController
 
     # puts "Context for query '#{query}':"
     # puts context
+    
 
     prompt = <<~PROMPT
       You are a helpful academic counselor at Physics Wallah.
