@@ -8,11 +8,43 @@
             <%= entry["query"] %>
           </div>
         </div>
+
         <!-- AI Response -->
         <div class="text-left">
-          <div class="inline-block bg-gray-200 text-gray-900 px-4 py-2 rounded-2xl shadow max-w-[75%]">
-          <!-- <div class="inline-block text-gray-900 px-4 py-2 rounded-2xl max-w-[75%]"> -->
-            <%= entry["response"] || "..." %>
+          <div class="inline-block bg-gray-100 text-gray-900 px-4 py-4 rounded-2xl shadow max-w-[75%] space-y-4">
+
+            <% if entry["response"] == "We have some great courses for Physics that can help you strengthen your concepts. Our top faculty, like Alakh Pandey and Rajwant Singh, are known for their engaging teaching style and effective problem-solving techniques. Would you like to know more about our Physics courses?" %>
+
+              <p class="text-sm text-gray-800 mb-2">
+                We have some great courses for Physics to strengthen your concepts. Our top faculty include:
+              </p>
+
+              <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-sm w-full">
+                  <%= image_tag "alakh.jpg", alt: "Alakh Pandey", class: "w-12 h-12 rounded-full object-cover" %>
+                  <div>
+                    <p class="font-semibold text-sm text-gray-800">Alakh Pandey</p>
+                    <p class="text-xs text-gray-600">Engaging teaching | Concept clarity | Physics Expert</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center space-x-2 bg-white p-2 rounded-lg shadow-sm w-full">
+                  <%= image_tag "rajwant.png", alt: "Rajwant Singh", class: "w-12 h-12 rounded-full object-cover" %>
+                  <div>
+                    <p class="font-semibold text-sm text-gray-800">Rajwant Singh</p>
+                    <p class="text-xs text-gray-600">Problem-solving wizard | Physics Mentor</p>
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-sm text-gray-800 mt-4">
+                Would you like to know more about our Physics courses?
+              </p>
+
+            <% else %>
+              <%= simple_format(entry["response"] || "...") %>
+            <% end %>
+
           </div>
         </div>
       </div>

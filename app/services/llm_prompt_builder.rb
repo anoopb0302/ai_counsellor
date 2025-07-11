@@ -47,7 +47,7 @@ class LlmPromptBuilder
     # chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
 
     # Get last 3 user-assistant turns (excluding the current query)
-    history_lines = chat_log.last(1).reject { |h| h["response"].nil? }.map do |turn|
+    history_lines = chat_log.last(3).reject { |h| h["response"].nil? }.map do |turn|
       "Student: #{turn["query"]}\nCounselor: #{turn["response"]}"
     end
 
@@ -72,26 +72,30 @@ class LlmPromptBuilder
     end
 
 
-
     <<~PROMPT
-      You are a helpful **PhysicsWallah's AI counselor** for students.
-      You will be given a context based on the student's previous interactions and relevant chunks from our knowledge base.
-      Answer the following question based on the provided context. If the answer is not found in the context, say "I'm not sure about that" rather than guessing.
-      Your response should be concise, informative, and relevant to the student's query.
-      Try to sell the student on the benefits of PhysicsWallah courses if they are asking about courses or preparation strategies.
-      This is a conversation between a student and you. Plase respond in not more than **2-3** lines.
+      You are a helpful and friendly AI counselor for students at **PhysicsWallah.**
 
-      Coversation History:
+      Your goals:
+      - Always respond in 2 to 3 short lines.
+      - Answer only based on the provided context, chat history, and summary.
+      - If you're unsure, say "I'm not sure about that."
+      - Mention PhysicsWallah courses only if the student asks about them.
+      - Respond warmly like a real mentor, not a robot.
+
+      You will be provided with the following information use the content to form your response:
+
+      Chat History:
       #{history_block}
-      
+
       Chat Summary:
       #{memory_block}
 
-      Context:
+      Knowledge Base Context:
       #{context}
 
-      Student: #{@query}
-      Counselor:
+      Student's question: #{@query}
+
+      Your answer:
     PROMPT
 
 

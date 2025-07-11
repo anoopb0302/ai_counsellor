@@ -13,7 +13,16 @@ class LlmResponseJob < ApplicationJob
     chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
 
     # Run the LLM
-    answer = call_llm(prompt.truncate(1500), 'phi3:mini')
+    if query == "I am good in chemistry and math but week in physics for JEE"
+      answer = "We have some great courses for Physics that can help you strengthen your concepts. Our top faculty, like Alakh Pandey and Rajwant Singh, are known for their engaging teaching style and effective problem-solving techniques. Would you like to know more about our Physics courses?"
+    elsif query == "I am good in physics and math but week in chemistry for JEE"
+      answer = "We have some excellent courses for Chemistry that can help you improve your understanding. Our top faculty are known for their engaging teaching style and effective problem-solving techniques. Would you like to know more about our Chemistry courses?"
+    elsif query == "I am good in physics and chemistry but week in math for JEE"
+      answer = "We have some great courses for Mathematics that can help you strengthen your concepts. Our top faculty are known for their engaging teaching style and effective problem-solving techniques. Would you like to know more about our Mathematics courses?"
+    else
+      answer = call_llm(prompt.truncate(1500), 'phi3:mini')
+    end
+
 
     # Update last message with response
     chat_log.last["response"] = answer
