@@ -22,6 +22,14 @@
         <div class="text-sm text-gray-500 hidden sm:block">
           <span>Built with ❤️ by FOSS Team</span>
         </div>
+
+        <%= link_to "New Chat", chat_session_path(SecureRandom.uuid),
+            class: "text-blue-600 hover:underline",
+            target: "_blank" %>
+
+        <%= link_to "Admin", admin_reports_path,
+            class: "text-sm text-gray-500 hover:text-blue-600",
+            target: "_blank" %>
       </div>
     </header>
 

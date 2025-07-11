@@ -1,3 +1,5 @@
+require 'net/http'
+require 'json'
 class LlmPromptBuilder
   def initialize(query, session_id)
     @query = query.strip

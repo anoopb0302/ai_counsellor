@@ -3,7 +3,15 @@ Rails.application.routes.draw do
     get 'reports/index'
     get 'reports/show'
   end
-  get 'chats/index'
+  # get 'chats/index'
+
+
+
+  get "/", to: "chats#index", as: :chat_root
+  get "/chats/:chat_session_id", to: "chats#index", as: :chat_session
+  post "/chats/:chat_session_id", to: "chats#create"
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -14,7 +22,7 @@ Rails.application.routes.draw do
   root "chats#index"
   post "semantic_search", to: "semantic_search#create"
 
-  resources :chats, only: [:index, :create]
+  # resources :chats, only: [:index, :create]
 
   namespace :admin do
     resources :reports, only: [:index, :show]

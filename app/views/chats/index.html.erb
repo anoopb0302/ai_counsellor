@@ -1,14 +1,14 @@
 <!-- app/views/chats/index.html.erb -->
 
-<%= turbo_stream_from session.id %>
+<%= turbo_stream_from @chat_session_id %>
 
 <div class="min-h-screen flex bg-white overflow-hidden">
 
-  <!-- Sidebar (Sticky and Scrollable) -->
+  <!-- Sidebar -->
   <div data-controller="prompt" class="hidden md:block w-64 bg-gray-50 border-r border-gray-200 px-4 py-6 overflow-y-auto fixed top-0 h-screen">
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">✨ Suggested Prompts</h2>
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">✨ Frequent Questions</h2>
 
-    <% facts = JSON.parse($redis.get("chat_facts:#{session.id}") || "{}") rescue {} %>
+    <% facts = JSON.parse($redis.get("chat_facts:#{@chat_session_id}") || "{}") rescue {} %>
     <% goal_text = facts["goal"].to_s.downcase %>
 
     <% all_prompts = {
@@ -16,10 +16,10 @@
         "Best books for JEE Advanced physics?",
         "What is the syllabus for JEE Main?",
         "How to manage board exams with JEE prep?",
-        "I am good in chemistry and math but week in physics for JEE",
-        "what are the courses available ?",
+        "I am good in chemistry and math but weak in physics for JEE",
+        "What are the courses available?",
         "I am looking for a crash course in physics",
-        "Thanks for the help, send me the information on leo.vibe@keepvibing.edu" 
+        "Thanks for the help, send me the information on leo.vibe@keepvibing.edu"
       ],
       "neet" => [
         "Top NEET colleges in India?",
@@ -34,7 +34,8 @@
       "general" => [
         "What exams should I prepare for?",
         "Tell me about career options after 12th.",
-        "How do I stay motivated for competitive exams?"
+        "How do I stay motivated for competitive exams?",
+        "Interested in IIT"
       ]
     } %>
 
@@ -42,14 +43,10 @@
     <% matched_keys = ["general"] if matched_keys.empty? %>
 
     <% matched_keys.each do |key| %>
-
-    <% next unless all_prompts[key] %>
-
       <div class="mb-4">
-        <h3 class="font-semibold text-sm text-gray-600 mb-1"><%= key.upcase %> Prompts</h3>
+        <h3 class="font-semibold text-sm text-gray-600 mb-1"><%= key.upcase %> Frequent Questions</h3>
         <div class="space-y-2">
-            <% all_prompts[key].each do |prompt| %>
-            
+          <% all_prompts[key].each do |prompt| %>
             <button
               data-action="click->prompt#fillPrompt"
               data-chat-prompt="<%= prompt %>"
@@ -60,6 +57,8 @@
         </div>
       </div>
     <% end %>
+
+    <!-- New Chat Link -->
   </div>
 
   <!-- Chat Area -->
@@ -67,18 +66,18 @@
     <div class="w-full max-w-5xl bg-white rounded-3xl flex flex-col overflow-hidden">
 
       <!-- Header -->
-      <div class="px-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+      <div class="px-6 py-4 border-b border-gray-200 bg-white sticky top-0 z-10 flex justify-between items-center">
         <h1 class="text-xl font-semibold text-gray-800">💬 PW AI Counselor</h1>
       </div>
 
       <!-- Chat Log -->
       <%= render "chat_box", chat_log: @chat_log %>
-      <%= render "chat_typing" if $redis.get("chat_typing:#{session.id}") %>
+      <%= render "chat_typing" if $redis.get("chat_typing:#{@chat_session_id}") %>
       <turbo-frame id="chat_typing"></turbo-frame>
 
       <!-- Input Box -->
       <div data-controller="chat" class="border-t border-gray-200 px-6 py-4 bg-white sticky bottom-0 z-10">
-        <%= form_with url: chats_path, method: :post, local: false,
+        <%= form_with url: chat_session_path(@chat_session_id), method: :post, local: false,
               data: {
                 controller: "chat",
                 action: "turbo:submit-start->chat#disableForm"
