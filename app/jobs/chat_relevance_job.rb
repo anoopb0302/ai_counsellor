@@ -58,7 +58,7 @@ class ChatRelevanceJob < ApplicationJob
       #{sentiment}
 
       Chat Messages:
-      #{chat_log.last(5).map { |c| "Student: #{c['query']}\nCounselor: #{c['response']}" }.join("\n")}
+      #{chat_log.last(2).map { |c| "Student: #{c['query']}\nCounselor: #{c['response']}" }.join("\n")}
 
       Respond in this JSON format:
       {

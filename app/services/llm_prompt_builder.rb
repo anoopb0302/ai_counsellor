@@ -49,7 +49,7 @@ class LlmPromptBuilder
     # chat_log = JSON.parse($redis.get(chat_log_key) || "[]")
 
     # Get last 3 user-assistant turns (excluding the current query)
-    history_lines = chat_log.last(3).reject { |h| h["response"].nil? }.map do |turn|
+    history_lines = chat_log.last(1).reject { |h| h["response"].nil? }.map do |turn|
       "Student: #{turn["query"]}\nCounselor: #{turn["response"]}"
     end
 
@@ -75,30 +75,26 @@ class LlmPromptBuilder
 
 
     <<~PROMPT
-      You are a helpful and friendly AI counselor for students at **PhysicsWallah.**
+      You are a helpful **PhysicsWallah's AI counselor** for students. You will be given.
+      - conversation history
+      - chat summary based on the student's previous interactions.
+      - context based on the student's previous interactions and relevant chunks from our knowledge base.
+      If the answer is not found, say "I'm not sure about that" rather than guessing.
+      Try to sell the student on the benefits of PhysicsWallah courses if they are asking about courses or preparation strategies.
+      If the student asks about a specific goal like IIT or NEET etc, provide details about that course from context only.
+      Plase answer in only "2 to 3 lines".
 
-      Your goals:
-      - Always respond in 2 to 3 short lines.
-      - Answer only based on the provided context, chat history, and summary.
-      - If you're unsure, say "I'm not sure about that."
-      - Mention PhysicsWallah courses only if the student asks about them.
-      - Respond warmly like a real mentor, not a robot.
-
-      You will be provided with the following information:
-
-      Chat History:
+      Coversation History:
       #{history_block}
-
+      
       Chat Summary:
       #{memory_block}
 
-      Knowledge Base Context:
+      Context:
       #{context}
 
-      Student's question: #{@query}
-
-      Respond in a friendly, helpful manner, keeping it concise and focused on the student's needs.
-      Your answer:
+      Student: #{@query}
+      Counselor:
     PROMPT
 
 
