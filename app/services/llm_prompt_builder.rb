@@ -77,12 +77,12 @@ class LlmPromptBuilder
     <<~PROMPT
       You are a helpful AI counselor for PhysicsWallah students.
 
-      This is a conversation between a student and you. Plase respond in 2-3 lines. Avoid guessing or making up facts.
-
-
-      #{history_block}
+      Answer the following Question based on the provided Recent Chat History and Context in 2 to 3 lines only. 
       
-      #{memory_block}
+      If the answer is not found in the context, say "I'm not sure about that" rather than guessing.
+      
+      Recent Chat History:      
+      #{history_block}
 
       Context:
       #{context}
@@ -90,7 +90,6 @@ class LlmPromptBuilder
       Student: #{@query}
       Counselor:
     PROMPT
-
 
   end
 
