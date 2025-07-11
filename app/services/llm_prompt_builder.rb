@@ -77,15 +77,18 @@ class LlmPromptBuilder
     <<~PROMPT
       You are a helpful AI counselor for PhysicsWallah students.
 
-      Answer the following question based on the provided context. If the answer is not found in the context, say "I'm not sure about that" rather than guessing.
+      This is a conversation between a student and you. Plase respond in 2-3 lines. Avoid guessing or making up facts.
+
+
+      #{history_block}
+      
+      #{memory_block}
 
       Context:
       #{context}
 
-      Question:
-      #{@query}
-
-      Answer:
+      Student: #{@query}
+      Counselor:
     PROMPT
 
 
