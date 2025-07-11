@@ -21,8 +21,8 @@ class SemanticSearchController < ApplicationController
     context = results.map { |c| "#{c.title}: #{c.text.truncate(150)}" }.join("\n\n")
 
 
-    puts "Context for query '#{query}':"
-    puts context
+    # puts "Context for query '#{query}':"
+    # puts context
 
     prompt = <<~PROMPT
       You are a helpful academic counselor at Physics Wallah.

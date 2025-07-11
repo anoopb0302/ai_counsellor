@@ -37,8 +37,8 @@ class ChatMemoryManager
   # end
 
   def fetch
-    puts "Fetching memory for session #{@session_id}"
-    puts "Memory key: #{@memory_key}"
+    # puts "Fetching memory for session #{@session_id}"
+    # puts "Memory key: #{@memory_key}"
     return $redis.get(@memory_key), $redis.get(@facts_key)
   end
 

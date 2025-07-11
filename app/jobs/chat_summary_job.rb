@@ -75,7 +75,6 @@ class ChatSummaryJob < ApplicationJob
 
 
     updated_summary = call_llm(summary_prompt).strip
-    puts "Updated summary: #{updated_summary}"
 
     # Create a sentiment job to analyze the updated summary
     # This will run after the summary is updated
