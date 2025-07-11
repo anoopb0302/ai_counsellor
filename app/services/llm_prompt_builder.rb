@@ -84,7 +84,7 @@ class LlmPromptBuilder
       - Mention PhysicsWallah courses only if the student asks about them.
       - Respond warmly like a real mentor, not a robot.
 
-      You will be provided with the following information use the content to form your response:
+      You will be provided with the following information:
 
       Chat History:
       #{history_block}
@@ -97,6 +97,7 @@ class LlmPromptBuilder
 
       Student's question: #{@query}
 
+      Respond in a friendly, helpful manner, keeping it concise and focused on the student's needs.
       Your answer:
     PROMPT
 
