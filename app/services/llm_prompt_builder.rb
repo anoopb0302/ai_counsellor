@@ -77,17 +77,15 @@ class LlmPromptBuilder
     <<~PROMPT
       You are a helpful AI counselor for PhysicsWallah students.
 
-      This is a conversation between a student and you. Plase respond in 2-3 lines.
-
-      #{history_block}
-      
-      #{memory_block}
+      Answer the following question based on the provided context. If the answer is not found in the context, say "I'm not sure about that" rather than guessing.
 
       Context:
       #{context}
 
-      Student: #{@query}
-      Counselor:
+      Question:
+      #{@query}
+
+      Answer:
     PROMPT
 
 
